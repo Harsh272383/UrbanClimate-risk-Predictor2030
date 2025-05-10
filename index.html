@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urban Climate Risk Predictor 2030</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-city me-2"></i>
+                Urban Climate Risk Predictor 2030
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#predictions"><i class="fas fa-chart-line me-1"></i> Predictions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#datavis"><i class="fas fa-chart-bar me-1"></i> Visualizations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#metrics"><i class="fas fa-tachometer-alt me-1"></i> Metrics</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about"><i class="fas fa-info-circle me-1"></i> About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Hero Section with Prediction Form -->
+    <section class="hero-section py-5" id="predictions">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <h1 class="display-4 fw-bold mb-4">Urban Climate Risk Predictor 2030</h1>
+                    <p class="lead mb-4">Advanced machine learning to assess climate-related risks for cities worldwide in 2030. Input your parameters to receive a customized risk assessment and recommendations.</p>
+                    <div class="d-flex gap-3">
+                        <a href="#datavis" class="btn btn-primary">
+                            <i class="fas fa-chart-bar me-2"></i>View Visualizations
+                        </a>
+                        <a href="#metrics" class="btn btn-outline-light">
+                            <i class="fas fa-tachometer-alt me-2"></i>Climate Metrics
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card shadow">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="card-title mb-0"><i class="fas fa-sliders-h me-2"></i>Input Parameters</h5>
+                        </div>
+                        <div class="card-body">
+                            <form action="/predict" method="post">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="temperature" class="form-label">Temperature (°C)</label>
+                                        <input type="number" class="form-control" id="temperature" name="temperature" min="10" max="50" step="0.1" value="32.5" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="humidity" class="form-label">Humidity (%)</label>
+                                        <input type="number" class="form-control" id="humidity" name="humidity" min="0" max="100" value="60" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="precipitation" class="form-label">Rainfall (mm)</label>
+                                        <input type="number" class="form-control" id="precipitation" name="precipitation" min="0" max="500" step="0.1" value="15.3" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="air_quality" class="form-label">Air Quality Index</label>
+                                        <input type="number" class="form-control" id="air_quality" name="air_quality" min="0" max="500" value="120" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="city_zone" class="form-label">City Zone</label>
+                                        <select class="form-select" id="city_zone" name="city_zone" required>
+                                            <option value="Zone A">Zone A</option>
+                                            <option value="Zone B">Zone B</option>
+                                            <option value="Zone C">Zone C</option>
+                                            <option value="Zone D">Zone D</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="flood_risk" class="form-label">Flood Risk (0-1)</label>
+                                        <input type="number" class="form-control" id="flood_risk" name="flood_risk" min="0" max="1" step="0.1" value="0.5">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="heatwave_risk" class="form-label">Heatwave Risk (0-1)</label>
+                                        <input type="number" class="form-control" id="heatwave_risk" name="heatwave_risk" min="0" max="1" step="0.1" value="0.5">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="drought_risk" class="form-label">Drought Risk (0-1)</label>
+                                        <input type="number" class="form-control" id="drought_risk" name="drought_risk" min="0" max="1" step="0.1" value="0.5">
+                                    </div>
+                                    <div class="col-12 mt-3">
+                                        <button type="submit" class="btn btn-primary w-100">
+                                            <i class="fas fa-calculator me-2"></i>Calculate Risk
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Prediction Results (shown after form submission) -->
+            {% if prediction_results %}
+            <div class="row mt-5">
+                <div class="col-lg-12">
+                    <div class="card shadow">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="card-title mb-0"><i class="fas fa-chart-line me-2"></i>Prediction Results</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="text-center mb-4">
+                                        <h2 class="mb-3">{{ prediction_results.risk_level }}</h2>
+                                        <div class="progress mb-3" style="height: 25px;">
+                                            <div class="progress-bar bg-success" role="progressbar" data-low-risk="{{ prediction_results.probability['Low Risk'] }}">
+                                                Low: {{ prediction_results.probability['Low Risk'] }}%
+                                            </div>
+                                        </div>
+                                        <div class="progress mb-3" style="height: 25px;">
+                                            <div class="progress-bar bg-warning" role="progressbar" data-medium-risk="{{ prediction_results.probability['Medium Risk'] }}">
+                                                Medium: {{ prediction_results.probability['Medium Risk'] }}%
+                                            </div>
+                                        </div>
+                                        <div class="progress mb-3" style="height: 25px;">
+                                            <div class="progress-bar bg-danger" role="progressbar" data-high-risk="{{ prediction_results.probability['High Risk'] }}">
+                                                High: {{ prediction_results.probability['High Risk'] }}%
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <h5><i class="fas fa-lightbulb me-2"></i>Recommendations</h5>
+                                    <ul class="list-group mb-4">
+                                        {% for recommendation in prediction_results.recommendations %}
+                                        <li class="list-group-item">{{ recommendation }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                    
+                                    <h5><i class="fas fa-sliders-h me-2"></i>Input Values</h5>
+                                    <div class="row">
+                                        {% for key, value in prediction_results.input_values.items() %}
+                                        <div class="col-md-3 mb-2">
+                                            <strong>{{ key }}:</strong> {{ value }}
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+    <!-- Data Visualizations Section -->
+    <section class="py-5 bg-dark" id="datavis">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold"><i class="fas fa-chart-bar me-3"></i>Climate Risk Visualizations</h2>
+                <p class="lead">Explore climate risk patterns and predictions for 2030</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="card h-100 shadow">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="card-title mb-0">Climate Risk by City Zone</h5>
+                        </div>
+                        <div class="card-body">
+                            <img src="{{ url_for('static', filename='assets/risk_chart.svg') }}" class="img-fluid" alt="Climate Risk Chart">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card h-100 shadow">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="card-title mb-0">Risk Factors Impact</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="featureImportanceChart" height="250"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card h-100 shadow">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="card-title mb-0">Temperature Impact on Risk Level</h5>
+                        </div>
+                        <div class="card-body">
+                            <img src="{{ url_for('static', filename='assets/green_space_impact.svg') }}" class="img-fluid" alt="Green Space Impact">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card h-100 shadow">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="card-title mb-0">Risk Decision Boundary</h5>
+                        </div>
+                        <div class="card-body d-flex align-items-center justify-content-center">
+                            <img src="{{ url_for('static', filename='assets/risk_decision_boundary.png') }}" class="img-fluid" alt="Risk Decision Boundary">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Climate Metrics Section -->
+    <section class="py-5" id="metrics">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold"><i class="fas fa-tachometer-alt me-3"></i>Climate Metrics</h2>
+                <p class="lead">Key climate indicators and thresholds used in risk assessment</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100 shadow">
+                        <div class="card-header bg-danger text-white">
+                            <h5 class="card-title mb-0"><i class="fas fa-thermometer-full me-2"></i>Temperature</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span>Low Risk</span>
+                                <span>&lt; 30°C</span>
+                            </div>
+                            <div class="progress mb-3" style="height: 20px;">
+                                <div class="progress-bar bg-success" style="width: 100%">Below 30°C</div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span>Medium Risk</span>
+                                <span>30°C - 38°C</span>
+                            </div>
+                            <div class="progress mb-3" style="height: 20px;">
+                                <div class="progress-bar bg-warning" style="width: 100%">30°C - 38°C</div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span>High Risk</span>
+                                <span>&gt; 38°C</span>
+                            </div>
+                            <div class="progress mb-3" style="height: 20px;">
+                                <div class="progress-bar bg-danger" style="width: 100%">Above 38°C</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100 shadow">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="card-title mb-0"><i class="fas fa-wind me-2"></i>Air Quality</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span>Low Risk</span>
+                                <span>&lt; 100 AQI</span>
+                            </div>
+                            <div class="progress mb-3" style="height: 20px;">
+                                <div class="progress-bar bg-success" style="width: 100%">Below 100 AQI</div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span>Medium Risk</span>
+                                <span>100 - 150 AQI</span>
+                            </div>
+                            <div class="progress mb-3" style="height: 20px;">
+                                <div class="progress-bar bg-warning" style="width: 100%">100 - 150 AQI</div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span>High Risk</span>
+                                <span>&gt; 150 AQI</span>
+                            </div>
+                            <div class="progress mb-3" style="height: 20px;">
+                                <div class="progress-bar bg-danger" style="width: 100%">Above 150 AQI</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100 shadow">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="card-title mb-0"><i class="fas fa-tint me-2"></i>Humidity</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span>Low Risk</span>
+                                <span>&gt; 50%</span>
+                            </div>
+                            <div class="progress mb-3" style="height: 20px;">
+                                <div class="progress-bar bg-success" style="width: 100%">Above 50%</div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span>Medium Risk</span>
+                                <span>40% - 50%</span>
+                            </div>
+                            <div class="progress mb-3" style="height: 20px;">
+                                <div class="progress-bar bg-warning" style="width: 100%">40% - 50%</div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span>High Risk</span>
+                                <span>&lt; 40%</span>
+                            </div>
+                            <div class="progress mb-3" style="height: 20px;">
+                                <div class="progress-bar bg-danger" style="width: 100%">Below 40%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer class="py-4 bg-dark text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h5><i class="fas fa-city me-2"></i>Urban Climate Risk Predictor 2030</h5>
+                    <p>Advanced machine learning for climate risk assessment and urban planning.</p>
+                </div>
+                <div class="col-lg-3">
+                    <h5>Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white">Home</a></li>
+                        <li><a href="#predictions" class="text-white">Predictions</a></li>
+                        <li><a href="#datavis" class="text-white">Visualizations</a></li>
+                        <li><a href="/about" class="text-white">About</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3">
+                    <h5>Resources</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white">Documentation</a></li>
+                        <li><a href="#" class="text-white">API</a></li>
+                        <li><a href="#" class="text-white">GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <div class="text-center">
+                <p class="mb-0">&copy; 2025 Urban Climate Risk Predictor. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Set Progress Bar Widths -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const lowRiskBar = document.querySelector('.progress-bar.bg-success[data-low-risk]');
+            if (lowRiskBar) {
+                const lowRiskValue = lowRiskBar.getAttribute('data-low-risk');
+                lowRiskBar.style.width = `${lowRiskValue}%`;
+            }
+            const mediumRiskBar = document.querySelector('.progress-bar.bg-warning[data-medium-risk]');
+            if (mediumRiskBar) {
+                const mediumRiskValue = mediumRiskBar.getAttribute('data-medium-risk');
+                mediumRiskBar.style.width = `${mediumRiskValue}%`;
+            }
+            const highRiskBar = document.querySelector('.progress-bar.bg-danger[data-high-risk]');
+            if (highRiskBar) {
+                const highRiskValue = highRiskBar.getAttribute('data-high-risk');
+                highRiskBar.style.width = `${highRiskValue}%`;
+            }
+        });
+    </script>
+    <!-- Feature Importance Chart -->
+    <script>
+        // Parse feature importance data
+        const featureImportanceData = JSON.parse('{{ feature_importance|tojson|safe }}');
+        
+        // Create the chart
+        const featureImportanceCtx = document.getElementById('featureImportanceChart').getContext('2d');
+        new Chart(featureImportanceCtx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(featureImportanceData),
+                datasets: [{
+                    label: 'Feature Importance',
+                    data: Object.values(featureImportanceData),
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.7)',
+                        'rgba(54, 162, 235, 0.7)',
+                        'rgba(255, 206, 86, 0.7)',
+                        'rgba(75, 192, 192, 0.7)',
+                        'rgba(153, 102, 255, 0.7)',
+                        'rgba(255, 159, 64, 0.7)',
+                        'rgba(199, 199, 199, 0.7)',
+                        'rgba(83, 102, 255, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(199, 199, 199, 1)',
+                        'rgba(83, 102, 255, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Importance'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Features'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Feature Importance in Risk Prediction'
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

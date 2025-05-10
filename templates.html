@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | Urban Climate Risk Predictor 2030</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-city me-2"></i>
+                Urban Climate Risk Predictor 2030
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/#predictions"><i class="fas fa-chart-line me-1"></i> Predictions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/#datavis"><i class="fas fa-chart-bar me-1"></i> Visualizations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/#metrics"><i class="fas fa-tachometer-alt me-1"></i> Metrics</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/about"><i class="fas fa-info-circle me-1"></i> About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- About Hero Section -->
+    <section class="py-5 bg-dark text-white">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h1 class="display-4 fw-bold mb-3">About the Project</h1>
+                    <p class="lead mb-4">The Urban Climate Risk Predictor 2030 is an advanced machine learning tool designed to help urban planners, policymakers, and citizens understand and prepare for climate-related risks in the near future.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Project Details -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="card shadow mb-4">
+                        <div class="card-header bg-primary text-white">
+                            <h3 class="mb-0"><i class="fas fa-project-diagram me-2"></i>Project Overview</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>The Urban Climate Risk Predictor 2030 uses machine learning to forecast climate-related risks in urban areas based on various environmental factors. This innovative tool helps identify potential vulnerabilities and suggest adaptive strategies to mitigate climate-related challenges.</p>
+                            
+                            <h5 class="mt-4">Key Features:</h5>
+                            <ul>
+                                <li><strong>Predictive Analysis:</strong> Utilizes random forest algorithms to predict climate risk levels</li>
+                                <li><strong>Customized Recommendations:</strong> Generates tailored adaptation strategies based on specific risk factors</li>
+                                <li><strong>Interactive Visualizations:</strong> Presents risk data through intuitive charts and graphs</li>
+                                <li><strong>Future Projections:</strong> Models climate conditions in 2030 based on current trends</li>
+                                <li><strong>Multi-factor Analysis:</strong> Considers temperature, precipitation, air quality, and other critical factors</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="card shadow mb-4">
+                        <div class="card-header bg-primary text-white">
+                            <h3 class="mb-0"><i class="fas fa-brain me-2"></i>The Machine Learning Model</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Our model employs an ensemble learning approach using Random Forest classification to determine risk levels. The algorithm analyzes patterns in historical climate data and identifies factor combinations that lead to different risk scenarios.</p>
+                            
+                            <h5 class="mt-4">Data Sources:</h5>
+                            <p>The model is trained on a comprehensive dataset that includes:</p>
+                            <ul>
+                                <li>Historical temperature and precipitation patterns</li>
+                                <li>Air quality measurements</li>
+                                <li>Geographical and topographical information</li>
+                                <li>Urban development patterns</li>
+                                <li>Green space distribution</li>
+                            </ul>
+                            
+                            <h5 class="mt-4">Model Performance:</h5>
+                            <p>The current model achieves an accuracy of over 85% in predicting climate risk levels, based on validation against historical data and expert assessments.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card shadow">
+                        <div class="card-header bg-primary text-white">
+                            <h3 class="mb-0"><i class="fas fa-users me-2"></i>Development Team</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>The Urban Climate Risk Predictor is developed by a cross-disciplinary team of climate scientists, data engineers, and urban planners committed to creating innovative solutions for climate adaptation.</p>
+                            
+                            <h5 class="mt-4">Team Members:</h5>
+                            <ul>
+                                <li><strong>Climate Science:</strong> Dr. Sarah Johnson, Dr. Michael Chen</li>
+                                <li><strong>Data Science:</strong> Dr. Raj Patel, Emma Rodriguez</li>
+                                <li><strong>Urban Planning:</strong> Prof. James Williams, Sophia Nakamura</li>
+                                <li><strong>Software Development:</strong> Alex Mercer, Leila Hassan</li>
+                            </ul>
+                            
+                            <h5 class="mt-4">Contact:</h5>
+                            <p>For questions or feedback about the Urban Climate Risk Predictor, please contact us at <a href="mailto:info@urbanclimate.org">info@urbanclimate.org</a>.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer class="py-4 bg-dark text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h5><i class="fas fa-city me-2"></i>Urban Climate Risk Predictor 2030</h5>
+                    <p>Advanced machine learning for climate risk assessment and urban planning.</p>
+                </div>
+                <div class="col-lg-3">
+                    <h5>Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/" class="text-white">Home</a></li>
+                        <li><a href="/#predictions" class="text-white">Predictions</a></li>
+                        <li><a href="/#datavis" class="text-white">Visualizations</a></li>
+                        <li><a href="/about" class="text-white">About</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3">
+                    <h5>Resources</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white">Documentation</a></li>
+                        <li><a href="#" class="text-white">API</a></li>
+                        <li><a href="#" class="text-white">GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <div class="text-center">
+                <p class="mb-0">&copy; 2025 Urban Climate Risk Predictor. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
